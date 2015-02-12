@@ -1,4 +1,3 @@
-import Prelude hiding (iterate)
 import Data.Char (intToDigit, digitToInt)
 import System.Environment (getArgs)
 
