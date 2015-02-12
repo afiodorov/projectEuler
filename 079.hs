@@ -9,27 +9,32 @@ placeEverywhere :: a -> [a] -> [[a]]
 placeEverywhere a [] = [[a]]
 placeEverywhere a (x:xs) = (a:x:xs) : map ((:) x) (placeEverywhere a xs)
 
+listsWithXBeforeLastY :: (Ord a) => a -> a -> [a] -> [[a]]
+listsWithXBeforeLastY x y list = let
+        (afterY', beforeY') = break (y ==) (reverse list)
+        (afterY, beforeY) = (reverse afterY', reverse beforeY') in
+        map (++ (y : afterY)) $ placeEverywhere x (init beforeY)
+
+listsWithYAfterFirstX :: (Ord a) => a -> a -> [a] -> [[a]]
+listsWithYAfterFirstX x y list  = let
+        (beforeX, afterX) = break (x ==) list in
+        map (beforeX ++) $ placeEverywhere y afterX
+
 getAllCandidates :: (Ord a) => [a] -> [a] -> [[a]]
 getAllCandidates attempt [] = [attempt]
 getAllCandidates [] workingPass = [workingPass]
 getAllCandidates [x] workingPass = if x `elem` workingPass then [workingPass]
     else placeEverywhere x workingPass
-getAllCandidates (x:y:xs) workingPass = do
+getAllCandidates attempt@(x:y:xs) workingPass = do
     candidate <- getAllCandidates (y:xs) workingPass
-    if successFullAttempt (x:y:xs) candidate then return candidate
+    if successFullAttempt attempt candidate then return candidate
     else
         let
-            (afterY, beforeY) = break (y ==) (reverse candidate)
-            putBefore = map (++ (y: reverse afterY))
-                $ placeEverywhere x (init (reverse beforeY))
+            withXBeforeY = listsWithXBeforeLastY x y candidate
+            withYAfterX = if x `elem` candidate then
+                listsWithYAfterFirstX x y candidate else []
         in
-            filter (successFullAttempt (x:y:xs)) (putAfter candidate) ++ putBefore
-        where
-            putAfter candidate = if x `elem` candidate then
-                let (beforeX, afterX) = break (x ==) candidate in
-                    map (beforeX ++) $ placeEverywhere y afterX
-            else []
-
+            filter (successFullAttempt attempt) withXBeforeY ++ withYAfterX
 
 successFullAttempt :: (Ord a) => [a] -> [a] -> Bool
 successFullAttempt _ [] = False
@@ -54,8 +59,7 @@ keepListsWithMinLength a = filter (\b -> length b == minL) a
         minLength [b] = length b
         minLength (x:xs) = min (length x) (minLength xs)
 
-
-main :: IO()
+main :: IO ()
 main = do
     (fileName:_) <- getArgs
     content <- readLines fileName
