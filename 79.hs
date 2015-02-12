@@ -5,6 +5,7 @@ import System.Environment (getArgs)
 readLines :: FilePath -> IO [String]
 readLines = fmap lines . readFile
 
+-- return a list of lists with a in every possible position
 placeEverywhere :: a -> [a] -> [[a]]
 placeEverywhere a [] = [[a]]
 placeEverywhere a (x:xs) = (a:x:xs) : map ((:) x) (placeEverywhere a xs)
@@ -20,38 +21,41 @@ listsWithYAfterFirstX x y list  = let
         (beforeX, afterX) = break (x ==) list in
         map (beforeX ++) $ placeEverywhere y afterX
 
-getAllCandidates :: (Ord a) => [a] -> [a] -> [[a]]
-getAllCandidates attempt [] = [attempt]
-getAllCandidates [] workingPass = [workingPass]
-getAllCandidates [x] workingPass = if x `elem` workingPass then [workingPass]
-    else placeEverywhere x workingPass
-getAllCandidates attempt@(x:y:xs) workingPass = do
-    candidate <- getAllCandidates (y:xs) workingPass
-    if successFullAttempt attempt candidate then return candidate
+-- generates updated passwords from an attempt
+shortestPasses :: (Ord a) => [a] -> [a] -> [[a]]
+shortestPasses attempt [] = [attempt]
+shortestPasses [] password = [password]
+shortestPasses [x] password = if x `elem` password then [password]
+    else placeEverywhere x password
+shortestPasses attempt@(x:y:xs) password = do
+    potentialPass <- shortestPasses (y:xs) password
+    if successFullAttempt attempt potentialPass then return potentialPass
     else
         let
-            withXBeforeY = listsWithXBeforeLastY x y candidate
-            withYAfterX = if x `elem` candidate then
-                listsWithYAfterFirstX x y candidate else []
+            withXBeforeY = listsWithXBeforeLastY x y potentialPass
+            withYAfterX = if x `elem` potentialPass then
+                listsWithYAfterFirstX x y potentialPass else []
         in
             filter (successFullAttempt attempt) withXBeforeY ++ withYAfterX
 
+-- checks that login attempt is succesfull for a password
 successFullAttempt :: (Ord a) => [a] -> [a] -> Bool
 successFullAttempt _ [] = False
 successFullAttempt [] _ = True
 successFullAttempt [x] xs = x `elem` xs
-successFullAttempt (x:y:xs) candidate = successFullAttempt (y:xs) (tail' (dropWhile (/= x) candidate))
+successFullAttempt (x:y:xs) password =
+    successFullAttempt (y:xs) (tail' (dropWhile (/= x) password))
     where
         tail' [] = []
         tail' ys = tail ys
 
-iterate :: (Ord a) => [[a]] -> [a] -> [[a]]
-iterate workingPasses attempt = do
-    workingPass <- workingPasses
-    getAllCandidates attempt workingPass
+genPassesForEachPass :: (Ord a) => [[a]] -> [a] -> [[a]]
+genPassesForEachPass passes attempt = do
+    pass <- passes
+    shortestPasses attempt pass
 
-keepListsWithMinLength :: [[a]] -> [[a]]
-keepListsWithMinLength a = filter (\b -> length b == minL) a
+keepWithMinLength :: [[a]] -> [[a]]
+keepWithMinLength a = filter (\b -> length b == minL) a
     where
         minL = minLength a
         minLength :: [[a]] -> Int
@@ -62,10 +66,12 @@ keepListsWithMinLength a = filter (\b -> length b == minL) a
 main :: IO ()
 main = do
     (fileName:_) <- getArgs
-    content <- readLines fileName
+    fileContent <- readLines fileName
     let
-        input = map (map digitToInt) content
-        initGuess = [head input]
-        genShortestPasses candidatePasses = keepListsWithMinLength . iterate candidatePasses
+        attempts = map (map digitToInt) fileContent
+        startingPass = [head attempts]
+        genShortestPasses candidatePasses =
+            keepWithMinLength . genPassesForEachPass candidatePasses
         in
-        mapM_ (putStrLn . map intToDigit) $ foldl genShortestPasses initGuess input
+        mapM_ (putStrLn . map intToDigit) $
+            foldl genShortestPasses startingPass attempts
