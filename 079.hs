@@ -15,7 +15,14 @@ getAllCandidates (x:y:xs) workingPass = do
     if successFullAttempt (x:y:xs) candidate then return candidate
     else
         let (afterY, beforeY) = break ((==) y) (reverse candidate) in
-        map (flip (++) (y:(reverse afterY))) $ placeEverywhere x (init (reverse beforeY))
+        let putBefore = map (flip (++) (y:(reverse afterY))) $ placeEverywhere x (init (reverse beforeY)) in
+        filter (successFullAttempt (x:y:xs)) (putAfter candidate) ++ putBefore
+        where
+            putAfter candidate = if x `elem` candidate then
+                let (beforeX, afterX) = break ((==) x) candidate in
+                    map ((++) beforeX) $ placeEverywhere y afterX
+            else []
+
 
 successFullAttempt :: (Ord a) => [a] -> [a] -> Bool
 successFullAttempt _ [] = False
@@ -42,7 +49,6 @@ keepListsWithMinLength a = filter (\b -> length b == minL) a
 
 main :: IO()
 main = print $ map (map intToDigit) $ foldl (\pass -> keepListsWithMinLength . (iterate pass)) [head input] input
-
 input :: [[Int]]
 input = [
     [3, 1, 9],
