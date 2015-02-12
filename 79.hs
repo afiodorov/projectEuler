@@ -49,9 +49,7 @@ successFullAttempt (x:y:xs) password =
         tail' ys = tail ys
 
 genPassesForEachPass :: (Ord a) => [[a]] -> [a] -> [[a]]
-genPassesForEachPass passes attempt = do
-    pass <- passes
-    shortestPasses attempt pass
+genPassesForEachPass passes attempt = passes >>= shortestPasses attempt
 
 keepWithMinLength :: [[a]] -> [[a]]
 keepWithMinLength a = filter (\b -> length b == minL) a
