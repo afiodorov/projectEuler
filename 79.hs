@@ -37,13 +37,16 @@ shortestPasses attempt@(x:y:xs) password = do
         in
             filter (successFullAttempt attempt) withXBeforeY ++ withYAfterX
 
--- checks that login attempt is succesfull for a password
+-- checks that login attempt is successfull for a password
 successFullAttempt :: (Ord a) => [a] -> [a] -> Bool
-successFullAttempt _ [] = False
-successFullAttempt [] _ = True
-successFullAttempt [x] xs = x `elem` xs
-successFullAttempt (x:y:xs) password =
-    successFullAttempt (y:xs) (tail' (dropWhile (/= x) password))
+successFullAttempt = isSubsequence
+
+isSubsequence :: (Ord a) => [a] -> [a] -> Bool
+isSubsequence _ [] = False
+isSubsequence [] _ = True
+isSubsequence [x] xs = x `elem` xs
+isSubsequence (x:y:xs) sequen =
+    isSubsequence (y:xs) (tail' (dropWhile (/= x) sequen))
     where
         tail' [] = []
         tail' ys = tail ys
@@ -52,13 +55,7 @@ genPassesForEachPass :: (Ord a) => [[a]] -> [a] -> [[a]]
 genPassesForEachPass passes attempt = passes >>= shortestPasses attempt
 
 keepWithMinLength :: [[a]] -> [[a]]
-keepWithMinLength a = filter (\b -> length b == minL) a
-    where
-        minL = minLength a
-        minLength :: [[a]] -> Int
-        minLength [] = undefined
-        minLength [b] = length b
-        minLength (x:xs) = min (length x) (minLength xs)
+keepWithMinLength xs = filter ((==) (minimum (map length xs)) . length) xs
 
 main :: IO ()
 main = do
