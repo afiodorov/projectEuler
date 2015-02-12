@@ -11,14 +11,14 @@ placeEverywhere a (x:xs) = (a:x:xs) : map ((:) x) (placeEverywhere a xs)
 
 listsWithXBeforeLastY :: (Ord a) => a -> a -> [a] -> [[a]]
 listsWithXBeforeLastY x y list = let
-        (afterY', beforeY') = break (y ==) (reverse list)
-        (afterY, beforeY) = (reverse afterY', reverse beforeY') in
-        map (++ (y : afterY)) $ placeEverywhere x (init beforeY)
+    (afterY', beforeY') = break (y ==) (reverse list)
+    (afterY, beforeY) = (reverse afterY', reverse beforeY') in
+    map (++ (y : afterY)) $ placeEverywhere x (init beforeY)
 
 listsWithYAfterFirstX :: (Ord a) => a -> a -> [a] -> [[a]]
 listsWithYAfterFirstX x y list  = let
-        (beforeX, afterX) = break (x ==) list in
-        map (beforeX ++) $ placeEverywhere y afterX
+    (beforeX, afterX) = break (x ==) list in
+    map (beforeX ++) $ placeEverywhere y afterX
 
 -- generates updated passwords from an attempt
 shortestPasses :: (Ord a) => [a] -> [a] -> [[a]]
@@ -28,18 +28,18 @@ shortestPasses [x] password = if x `elem` password then [password]
     else placeEverywhere x password
 shortestPasses attempt@(x:y:xs) password = do
     potentialPass <- shortestPasses (y:xs) password
-    if successFullAttempt attempt potentialPass then return potentialPass
+    if isSuccessFullAttempt attempt potentialPass then return potentialPass
     else
         let
             withXBeforeY = listsWithXBeforeLastY x y potentialPass
             withYAfterX = if x `elem` potentialPass then
                 listsWithYAfterFirstX x y potentialPass else []
         in
-            filter (successFullAttempt attempt) withXBeforeY ++ withYAfterX
+            filter (isSuccessFullAttempt attempt) withXBeforeY ++ withYAfterX
 
 -- checks that login attempt is successfull for a password
-successFullAttempt :: (Ord a) => [a] -> [a] -> Bool
-successFullAttempt = isSubsequence
+isSuccessFullAttempt :: (Ord a) => [a] -> [a] -> Bool
+isSuccessFullAttempt = isSubsequence
 
 isSubsequence :: (Ord a) => [a] -> [a] -> Bool
 isSubsequence _ [] = False
@@ -51,9 +51,6 @@ isSubsequence (x:y:xs) sequen =
         tail' [] = []
         tail' ys = tail ys
 
-genPassesForEachPass :: (Ord a) => [[a]] -> [a] -> [[a]]
-genPassesForEachPass passes attempt = passes >>= shortestPasses attempt
-
 keepWithMinLength :: [[a]] -> [[a]]
 keepWithMinLength xs = filter ((==) (minimum (map length xs)) . length) xs
 
@@ -64,8 +61,8 @@ main = do
     let
         attempts = map (map digitToInt) fileContent
         startingPass = [head attempts]
-        genShortestPasses candidatePasses =
-            keepWithMinLength . genPassesForEachPass candidatePasses
+        genShortestPasses passes attempt =
+            keepWithMinLength (passes >>= shortestPasses attempt)
         in
         mapM_ (putStrLn . map intToDigit) $
             foldl genShortestPasses startingPass attempts
