@@ -9,7 +9,7 @@ each shortest password generated so far.
 try:
 ```shell
 cabal run 79 ./keylog.txt
-```
 
 Preprocessing executable '79' for projecteuler-0.1.0.0...
 73162890
+```
