@@ -60,9 +60,9 @@ main = do
     fileContent <- readLines fileName
     let
         attempts = map (map digitToInt) fileContent
-        startingPass = [head attempts]
+        startingPasses = [head attempts]
         genShortestPasses passes attempt =
             keepWithMinLength (passes >>= shortestPasses attempt)
         in
         mapM_ (putStrLn . map intToDigit) $
-            foldl genShortestPasses startingPass attempts
+            foldl genShortestPasses startingPasses attempts
