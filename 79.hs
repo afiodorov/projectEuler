@@ -25,9 +25,9 @@ shortestPasses [x] password = if x `elem` password then [password]
     else placeEverywhere x password
 shortestPasses attempt@(x:y:xs) password =
     let potentialPasses = shortestPasses (y : xs) password
-        successfullAttempts = filter (isSuccessFullAttempt attempt) potentialPasses
-    in case successfullAttempts of
-    (_:_) -> successfullAttempts
+        validPasses = filter (isSuccessFullAttempt attempt) potentialPasses
+    in case validPasses    of
+    (_:_) -> validPasses
     [] -> do
         potentialPass <- potentialPasses
         let withXBeforeY = listsWithXBeforeLastY x y potentialPass
