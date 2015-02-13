@@ -26,7 +26,7 @@ shortestPasses [x] password = if x `elem` password then [password]
 shortestPasses attempt@(x:y:xs) password =
     let potentialPasses = shortestPasses (y : xs) password
         validPasses = filter (isSuccessFullAttempt attempt) potentialPasses
-    in case validPasses    of
+    in case validPasses of
     (_:_) -> validPasses
     [] -> do
         potentialPass <- potentialPasses
