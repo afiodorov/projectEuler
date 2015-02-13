@@ -23,16 +23,17 @@ shortestPasses attempt [] = [attempt]
 shortestPasses [] password = [password]
 shortestPasses [x] password = if x `elem` password then [password]
     else placeEverywhere x password
-shortestPasses attempt@(x:y:xs) password = do
-    potentialPass <- shortestPasses (y:xs) password
-    if isSuccessFullAttempt attempt potentialPass then return potentialPass
-    else
-        let
-            withXBeforeY = listsWithXBeforeLastY x y potentialPass
-            withYAfterX = if x `elem` potentialPass then
-                listsWithYAfterFirstX x y potentialPass else []
-        in
-            filter (isSuccessFullAttempt attempt) withXBeforeY ++ withYAfterX
+shortestPasses attempt@(x:y:xs) password =
+    let potentialPasses = shortestPasses (y : xs) password
+        successfullAttempts = filter (isSuccessFullAttempt attempt) potentialPasses
+    in case successfullAttempts of
+    (_:_) -> successfullAttempts
+    [] -> do
+        potentialPass <- potentialPasses
+        let withXBeforeY = listsWithXBeforeLastY x y potentialPass
+            withYAfterX = if x `elem` potentialPass
+                then listsWithYAfterFirstX x y potentialPass else []
+        filter (isSuccessFullAttempt attempt) withXBeforeY ++ withYAfterX
 
 -- checks that login attempt is successfull for a password
 isSuccessFullAttempt :: (Eq a) => [a] -> [a] -> Bool
