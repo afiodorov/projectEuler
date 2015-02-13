@@ -10,15 +10,12 @@ placeEverywhere a [] = [[a]]
 placeEverywhere a (x:xs) = (a:x:xs) : map ((:) x) (placeEverywhere a xs)
 
 listsWithXBeforeLastY :: (Ord a) => a -> a -> [a] -> [[a]]
-listsWithXBeforeLastY x y list = let
-    (afterY', beforeY') = break (y ==) (reverse list)
-    (afterY, beforeY) = (reverse afterY', reverse beforeY') in
-    map (++ (y : afterY)) $ placeEverywhere x (init beforeY)
+listsWithXBeforeLastY x y = map reverse . listsWithYAfterFirstX y x . reverse
 
 listsWithYAfterFirstX :: (Ord a) => a -> a -> [a] -> [[a]]
 listsWithYAfterFirstX x y list  = let
     (beforeX, afterX) = break (x ==) list in
-    map (beforeX ++) $ placeEverywhere y afterX
+    map ((beforeX ++ [x]) ++) $ placeEverywhere y (tail afterX)
 
 -- generates updated passwords from an attempt
 shortestPasses :: (Ord a) => [a] -> [a] -> [[a]]
