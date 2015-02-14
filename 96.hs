@@ -19,7 +19,6 @@ mtoList m = concatMap (toList . \row -> M.getRow row m) [1 .. M.nrows m]
 instance Data.Foldable.Foldable M.Matrix
     where foldMap f m = mconcat $ map f (mtoList m)
 
--- utils
 readLines :: FilePath -> IO [String]
 readLines = fmap lines . readFile
 
@@ -40,8 +39,8 @@ findSoln' (Just input) =
 isSolved :: Sudoku -> Bool
 isSolved = not . any (0 ==)
 
-candidates :: Sudoku -> (Int, Int) -> [Int]
-candidates s (row, col)
+candidateDigits :: Sudoku -> (Int, Int) -> [Int]
+candidateDigits s (row, col)
     | s ! (row, col) /= 0    = []
     | otherwise = let
         rowList = toList $ M.getRow row s
@@ -51,27 +50,29 @@ candidates s (row, col)
         (([1 .. 9] \\ rowList) \\ colList) \\ boxList
 
 placeDigit :: Sudoku -> [Sudoku]
-placeDigit s = let
-        allIndices = [(x, y) | y <- [1..M.ncols s], x <- [1..M.nrows s]]
-        notPlacedYet = filter ((==) 0 . (s !)) allIndices
-        f :: ((Int, Int), [Int]) -> (Int, Int) -> ((Int, Int), [Int])
-        f (minIdx, cand) nextIdx = if length cand < length (candidates s nextIdx)
-            then (minIdx, cand)
-            else (nextIdx, candidates s nextIdx)
-        startPair = (head notPlacedYet, candidates s (head notPlacedYet))
-        (index, potentialDigits) = foldl f startPair (tail notPlacedYet)
+placeDigit m = let
+        allSquares = [(x, y) | y <- [1..M.ncols m], x <- [1..M.nrows m]]
+        emptySquares = filter ((==) 0 . (m !)) allSquares
+        f (square, guesses') nextSquare =
+            case length guesses' < length nextGuesses of
+                True -> (square, guesses')
+                False -> (nextSquare, nextGuesses)
+                where
+                    nextGuesses = candidateDigits m nextSquare
+        startPair = (head emptySquares, candidateDigits m (head emptySquares))
+        (sqWithLeastGuesses, guesses) = foldl f startPair (tail emptySquares)
     in
-        map (\val -> M.setElem val index s) potentialDigits
+        map (\val -> M.setElem val sqWithLeastGuesses m) guesses
 
 boxIndices :: (Integral a) => (a, a) -> [(a, a)]
-boxIndices (row, col) = [(x, y) | x <- ran row, y <- ran col]
+boxIndices (row, col) = [(x, y) | x <- range row, y <- range col]
     where
         startNum a = ((a - 1) `div` 3) * 3 + 1
-        ran a = [startNum a .. startNum a + 2]
+        range a = [startNum a .. startNum a + 2]
 
 fromDigits :: [Int] -> Int
 fromDigits = foldl addDigit 0
-    where addDigit num d = 10*num + d
+    where addDigit num d = 10 * num + d
 
 main :: IO ()
 main = do
