@@ -1,11 +1,14 @@
 import qualified Data.Matrix as M
 import Data.Monoid
 import Data.Matrix ((!))
-import Data.Maybe()
+import Data.Maybe (fromJust)
 import Data.Vector (toList)
 import Data.List ((\\))
+import Data.List.Split (splitWhen)
 import Data.Foldable (any, Foldable, foldMap)
 import Prelude hiding (any)
+import System.Environment (getArgs)
+import Data.Char (digitToInt)
 
 -- patching up Data.Matrix module
 type Sudoku = M.Matrix Int
@@ -16,29 +19,9 @@ mtoList m = concatMap (toList . \row -> M.getRow row m) [1 .. M.nrows m]
 instance Data.Foldable.Foldable M.Matrix
     where foldMap f m = mconcat $ map f (mtoList m)
 
-sudoku :: Sudoku
-sudoku = M.fromLists [
-    [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    [9, 0, 0, 3, 0, 5, 0, 0, 1],
-    [0, 0, 1, 8, 0, 6, 4, 0, 0],
-    [0, 0, 8, 1, 0, 2, 9, 0, 0],
-    [7, 0, 0, 0, 0, 0, 0, 0, 8],
-    [0, 0, 6, 7, 0, 8, 2, 0, 0],
-    [0, 0, 2, 6, 0, 9, 5, 0, 0],
-    [8, 0, 0, 2, 0, 3, 0, 0, 9],
-    [0, 0, 5, 0, 1, 0, 3, 0, 0] ]
-
-{-sudoku :: Sudoku-}
-{-sudoku = M.fromLists [-}
-    {-[0, 0, 3, 0, 2, 0, 6, 0, 0],-}
-    {-[9, 0, 0, 3, 0, 5, 0, 0, 1],-}
-    {-[0, 0, 1, 8, 0, 6, 4, 0, 0],-}
-    {-[0, 0, 8, 1, 0, 2, 9, 0, 0],-}
-    {-[7, 0, 0, 0, 0, 0, 0, 0, 8],-}
-    {-[0, 0, 6, 7, 0, 8, 2, 0, 0],-}
-    {-[0, 0, 2, 6, 0, 9, 5, 0, 0],-}
-    {-[8, 0, 0, 2, 0, 3, 0, 0, 9],-}
-    {-[0, 0, 5, 0, 1, 0, 3, 0, 0] ]-}
+-- utils
+readLines :: FilePath -> IO [String]
+readLines = fmap lines . readFile
 
 findSoln :: Sudoku -> Maybe Sudoku
 findSoln = findSoln' . Just
@@ -71,13 +54,12 @@ placeDigit :: Sudoku -> [Sudoku]
 placeDigit s = let
         allIndices = [(x, y) | y <- [1..M.ncols s], x <- [1..M.nrows s]]
         notPlacedYet = filter ((==) 0 . (s !)) allIndices
-        firstIdx = head notPlacedYet
-        firstCandidates = candidates s firstIdx
         f :: ((Int, Int), [Int]) -> (Int, Int) -> ((Int, Int), [Int])
         f (minIdx, cand) nextIdx = if length cand < length (candidates s nextIdx)
             then (minIdx, cand)
             else (nextIdx, candidates s nextIdx)
-        (index, potentialDigits) = foldl f (firstIdx, firstCandidates) notPlacedYet
+        startPair = (head notPlacedYet, candidates s (head notPlacedYet))
+        (index, potentialDigits) = foldl f startPair (tail notPlacedYet)
     in
         map (\val -> M.setElem val index s) potentialDigits
 
@@ -87,5 +69,20 @@ boxIndices (row, col) = [(x, y) | x <- ran row, y <- ran col]
         startNum a = ((a - 1) `div` 3) * 3 + 1
         ran a = [startNum a .. startNum a + 2]
 
+fromDigits :: [Int] -> Int
+fromDigits = foldl addDigit 0
+    where addDigit num d = 10*num + d
+
 main :: IO ()
-main = print $ findSoln sudoku
+main = do
+    (fileName:_) <- getArgs
+    fileContent <- readLines fileName
+    let
+        sudokusList = map (map (map digitToInt)) $
+            tail $ splitWhen ((==) "Grid" . head . words) fileContent
+        sudokus = map M.fromLists sudokusList
+        solvedSudokus = map findSoln sudokus
+        sums = map (fromDigits . take 3 . toList . M.getRow 1 . fromJust)
+            solvedSudokus
+        in
+        print $ foldl1 (+) sums
