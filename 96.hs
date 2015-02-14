@@ -26,13 +26,8 @@ fromDigits :: [Int] -> Int
 fromDigits = foldl addDigit 0
     where addDigit num d = 10 * num + d
 
-
 findSoln :: Sudoku -> Maybe Sudoku
-findSoln = findSoln' . Just
-
-findSoln' :: Maybe Sudoku -> Maybe Sudoku
-findSoln' Nothing = Nothing
-findSoln' (Just input) =
+findSoln input =
     case isSolved input of
     True -> Just input
     False -> case dropWhile (== Nothing) solns of
