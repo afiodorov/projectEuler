@@ -9,8 +9,20 @@ each shortest password generated so far.
 
 try:
 ```shell
-cabal run 79 ./keylog.txt
+cabal run 79 ./data/keylog.txt
 
 Preprocessing executable '79' for projecteuler-0.1.0.0...
 73162890
+```
+
+# 96.hs
+
+Backtracking depth-first algorithm. At each step pick a square with least
+number of guesses.
+
+```shell
+cabal run 96 ./data/p096_sudoku.txt
+
+Linking dist/build/96/96 ...
+24702
 ```

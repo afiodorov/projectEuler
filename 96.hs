@@ -22,6 +22,11 @@ instance Data.Foldable.Foldable M.Matrix
 readLines :: FilePath -> IO [String]
 readLines = fmap lines . readFile
 
+fromDigits :: [Int] -> Int
+fromDigits = foldl addDigit 0
+    where addDigit num d = 10 * num + d
+
+
 findSoln :: Sudoku -> Maybe Sudoku
 findSoln = findSoln' . Just
 
@@ -39,18 +44,9 @@ findSoln' (Just input) =
 isSolved :: Sudoku -> Bool
 isSolved = not . any (0 ==)
 
-candidateDigits :: Sudoku -> (Int, Int) -> [Int]
-candidateDigits s (row, col)
-    | s ! (row, col) /= 0    = []
-    | otherwise = let
-        rowList = toList $ M.getRow row s
-        colList = toList $ M.getCol col s
-        boxList = map (s !) $ boxIndices (row, col)
-        in
-        (([1 .. 9] \\ rowList) \\ colList) \\ boxList
-
 placeDigit :: Sudoku -> [Sudoku]
-placeDigit m = let
+placeDigit m = map (\val -> M.setElem val sqWithLeastGuesses m) guesses
+    where
         allSquares = [(x, y) | y <- [1..M.ncols m], x <- [1..M.nrows m]]
         emptySquares = filter ((==) 0 . (m !)) allSquares
         f (square, guesses') nextSquare =
@@ -61,8 +57,15 @@ placeDigit m = let
                     nextGuesses = candidateDigits m nextSquare
         startPair = (head emptySquares, candidateDigits m (head emptySquares))
         (sqWithLeastGuesses, guesses) = foldl f startPair (tail emptySquares)
-    in
-        map (\val -> M.setElem val sqWithLeastGuesses m) guesses
+
+candidateDigits :: Sudoku -> (Int, Int) -> [Int]
+candidateDigits s (row, col)
+    | s ! (row, col) /= 0  = undefined
+    | otherwise = (([1 .. 9] \\ rowDigits) \\ colDigits) \\ boxDigits
+    where
+        rowDigits = toList $ M.getRow row s
+        colDigits = toList $ M.getCol col s
+        boxDigits = map (s !) $ boxIndices (row, col)
 
 boxIndices :: (Integral a) => (a, a) -> [(a, a)]
 boxIndices (row, col) = [(x, y) | x <- range row, y <- range col]
@@ -70,20 +73,16 @@ boxIndices (row, col) = [(x, y) | x <- range row, y <- range col]
         startNum a = ((a - 1) `div` 3) * 3 + 1
         range a = [startNum a .. startNum a + 2]
 
-fromDigits :: [Int] -> Int
-fromDigits = foldl addDigit 0
-    where addDigit num d = 10 * num + d
-
 main :: IO ()
 main = do
     (fileName:_) <- getArgs
     fileContent <- readLines fileName
     let
-        sudokusList = map (map (map digitToInt)) $
+        sudokusAsLists = map (map (map digitToInt)) $
             tail $ splitWhen ((==) "Grid" . head . words) fileContent
-        sudokus = map M.fromLists sudokusList
+        sudokus = map M.fromLists sudokusAsLists
         solvedSudokus = map findSoln sudokus
-        sums = map (fromDigits . take 3 . toList . M.getRow 1 . fromJust)
+        firstDigits = map (fromDigits . take 3 . toList . M.getRow 1 . fromJust)
             solvedSudokus
         in
-        print $ foldl1 (+) sums
+        print $ foldl1 (+) firstDigits
