@@ -40,7 +40,7 @@ placeDigit m = map (\val -> M.setElem val sqWithLeastGuesses m) guesses
         allSquares = [(x, y) | y <- [1..M.ncols m], x <- [1..M.nrows m]]
         emptySquares = filter ((==) 0 . (m !)) allSquares
         f (square, guesses') nextSquare =
-            case length guesses' < length nextGuesses of
+            case length guesses' <= length nextGuesses of
                 True -> (square, guesses')
                 False -> (nextSquare, nextGuesses)
                 where
