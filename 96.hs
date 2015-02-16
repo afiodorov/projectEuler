@@ -27,10 +27,9 @@ fromDigits = foldl addDigit 0
     where addDigit num d = 10 * num + d
 
 findSoln :: Sudoku -> Maybe Sudoku
-findSoln input =
-    case isSolved input of
-    True -> Just input
-    False -> msum $ map findSoln (placeDigit input)
+findSoln input
+    | (isSolved input) == True = Just input
+    | otherwise                =  msum $ map findSoln (placeDigit input)
 
 isSolved :: Sudoku -> Bool
 isSolved = not . any (0 ==)
