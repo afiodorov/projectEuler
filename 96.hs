@@ -29,7 +29,7 @@ fromDigits = foldl addDigit 0
 findSoln :: Sudoku -> Maybe Sudoku
 findSoln input
     | (isSolved input) == True = Just input
-    | otherwise                =  msum $ map findSoln (placeDigit input)
+    | otherwise                = msum $ map findSoln (placeDigit input)
 
 isSolved :: Sudoku -> Bool
 isSolved = not . any (0 ==)
