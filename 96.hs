@@ -9,8 +9,8 @@ import Data.Foldable (any, Foldable, foldMap)
 import Prelude hiding (any)
 import System.Environment (getArgs)
 import Data.Char (digitToInt)
+import Control.Monad (msum)
 
--- patching up Data.Matrix module
 type Sudoku = M.Matrix Int
 
 mtoList :: M.Matrix a -> [a]
@@ -30,11 +30,7 @@ findSoln :: Sudoku -> Maybe Sudoku
 findSoln input =
     case isSolved input of
     True -> Just input
-    False -> case dropWhile (== Nothing) solns of
-        [] -> Nothing
-        (x:_) -> x
-        where
-            solns = map findSoln (placeDigit input)
+    False -> msum $ map findSoln (placeDigit input)
 
 isSolved :: Sudoku -> Bool
 isSolved = not . any (0 ==)
