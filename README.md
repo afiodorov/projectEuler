@@ -19,6 +19,23 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
+# 50. Su Doku.
+
+#### [Problem][p50] | [Solution][s50]
+
+Very first and naive implementation gave me the right answer, but the time
+needs to be improved.
+
+```shell
+time cabal run 50 1000000
+Preprocessing executable '50' for projecteuler-0.1.0.0...
+997651
+
+real    2m54.542s
+user    2m54.157s
+sys     0m0.350s
+```
+
 # 79. Passcode derivation.
 
 #### [Problem][p79] | [Solution][s79]
@@ -53,23 +70,6 @@ user    0m8.363s
 sys     0m0.390s
 ```
 
-# 50. Su Doku.
-
-#### [Problem][p50] | [Solution][s50]
-
-Very first and naive implementation gave me the right answer, but the time
-needs to be improved.
-
-```shell
-time cabal run 50 1000000
-Preprocessing executable '50' for projecteuler-0.1.0.0...
-997651
-
-real    2m54.542s
-user    2m54.157s
-sys     0m0.350s
-```
-
 # 96. Su Doku.
 
 #### [Problem][p96] | [Solution][s96]
@@ -89,6 +89,8 @@ sys     0m0.323s
 
 [p7]: https://projecteuler.net/problem=7
 [s7]: https://github.com/afiodorov/projectEuler/blob/master/7.hs
+[p50]: https://projecteuler.net/problem=50
+[s50]: https://github.com/afiodorov/projectEuler/blob/master/50.hs
 [p79]: https://projecteuler.net/problem=79
 [s79]: https://github.com/afiodorov/projectEuler/blob/master/79.hs
 [p88]: https://projecteuler.net/problem=88
