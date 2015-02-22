@@ -6,9 +6,9 @@ import Memoize (memoize)
 import Data.Functor ((<$))
 
 smallestInt :: Int -> Int
-smallestInt size = fromJust . msum $ map f [size ..]
+smallestInt size = fromJust . msum $ map keepIfDecomposable [size ..]
     where
-    f n = n <$ decompose size n
+    keepIfDecomposable n = n <$ decompose size n
 
 decompose :: Int -> Int -> Maybe [Int]
 decompose size n = decompose' size n n
