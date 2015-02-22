@@ -4,13 +4,8 @@ import Data.Maybe (fromJust)
 import Data.List (nub)
 import Memoize (memoize)
 
-lowerBound :: (Integral a) => a -> a
-lowerBound n = ceiling $ m ** (m / (m - 1))
-    where
-        m = fromIntegral n :: Double
-
 smallestInt :: Int -> Int
-smallestInt size = fromJust . msum $ map f [lowerBound size ..]
+smallestInt size = fromJust . msum $ map f [size ..]
     where
     f n = case decompose size n of
         Nothing -> Nothing

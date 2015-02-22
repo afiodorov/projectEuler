@@ -20,17 +20,16 @@ sys     0m0.320s
 
 # 88.hs
 
-Brute forces decomposition via factorisation and backtracking. Lower-bound
-comes from Geometric Mean <= Average.
+Brute forces decomposition via factorisation and backtracking.
 
 ```shell
 time cabal run 88
 Preprocessing executable '88' for projecteuler-0.1.0.0...
 7587457
 
-real    0m8.709s
-user    0m8.393s
-sys     0m0.310s
+real    0m8.768s
+user    0m8.363s
+sys     0m0.390s
 ```
 
 # 96.hs
