@@ -3,7 +3,7 @@ anything. Gives me an incentive to keep my code clean.
 
 ## Content:
 
-# 7.hs
+# [7.hs](https://projecteuler.net/problem=7)
 
 Haskell's show-off example: "Sieve of Eratosthenes"
 
@@ -19,7 +19,7 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
-# 79.hs
+# [79.hs](https://projecteuler.net/problem=79)
 Solution to 79'th problem without the assumption of non-repeats.
 Algorithm: with each successful attempt generate all shortest passwords for
 each shortest password generated so far.
@@ -35,7 +35,7 @@ user    0m0.910s
 sys     0m0.320s
 ```
 
-# 88.hs
+# [88.hs](https://projecteuler.net/problem=88)
 
 Brute forces decomposition via factorisation and backtracking.
 
@@ -49,7 +49,7 @@ user    0m8.363s
 sys     0m0.390s
 ```
 
-# 96.hs
+# [96.hs](https://projecteuler.net/problem=96)
 
 Backtracking depth-first algorithm. At each step pick a square with least
 number of guesses.
