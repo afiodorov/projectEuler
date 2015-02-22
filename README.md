@@ -3,7 +3,7 @@ anything. Gives me an incentive to keep my code clean.
 
 ## Content:
 
-# 7
+# 7. 10001st prime.
 
 #### [Problem][p7] | [Solution][s7]
 
@@ -19,7 +19,7 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
-# 79
+# 79. Passcode derivation.
 
 #### [Problem][p79] | [Solution][s79]
 
@@ -27,7 +27,6 @@ Solution to 79'th problem without the assumption of non-repeats.
 Algorithm: with each successful attempt generate all shortest passwords for
 each shortest password generated so far.
 
-try:
 ```shell
 time cabal run 79 ./data/keylog.txt
 Preprocessing executable '79' for projecteuler-0.1.0.0...
@@ -38,7 +37,7 @@ user    0m0.910s
 sys     0m0.320s
 ```
 
-# 88
+# 88. Product-sum numbers.
 
 #### [Problem][p88] | [Solution][s88]
 
@@ -54,7 +53,7 @@ user    0m8.363s
 sys     0m0.390s
 ```
 
-# 96
+# 96. Su Doku.
 
 #### [Problem][p96] | [Solution][s96]
 
@@ -79,4 +78,3 @@ sys     0m0.323s
 [s88]: https://github.com/afiodorov/projectEuler/blob/master/88.hs
 [p96]: https://projecteuler.net/problem=96
 [s96]: https://github.com/afiodorov/projectEuler/blob/master/96.hs
-
