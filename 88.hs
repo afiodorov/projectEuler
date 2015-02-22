@@ -21,6 +21,7 @@ decompose size n = decompose' size n n
 
 decompose' :: Int -> Int -> Int -> Maybe [Int]
 decompose' size prod sum'
+    | sum' < size               = Nothing
     | prod == 1 && size == sum' = Just (replicate size 1)
     | prod == 1 && size /= sum' = Nothing
     | otherwise                 = msum $ map f (memoize factors prod)
