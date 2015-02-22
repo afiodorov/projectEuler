@@ -9,10 +9,13 @@ each shortest password generated so far.
 
 try:
 ```shell
-cabal run 79 ./data/keylog.txt
-
+time run 79 ./data/keylog.txt
 Preprocessing executable '79' for projecteuler-0.1.0.0...
 73162890
+
+real    0m1.245s
+user    0m0.910s
+sys     0m0.320s
 ```
 
 # 88.hs
@@ -36,8 +39,11 @@ Backtracking depth-first algorithm. At each step pick a square with least
 number of guesses.
 
 ```shell
-cabal run 96 ./data/p096_sudoku.txt
-
-Linking dist/build/96/96 ...
+time cabal run 96 ./data/p096_sudoku.txt
+Preprocessing executable '96' for projecteuler-0.1.0.0...
 24702
+
+real    0m2.429s
+user    0m2.090s
+sys     0m0.323s
 ```
