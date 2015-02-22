@@ -53,6 +53,23 @@ user    0m8.363s
 sys     0m0.390s
 ```
 
+# 50. Su Doku.
+
+#### [Problem][p50] | [Solution][s50]
+
+Very first and naive implementation gave me the right answer, but the time
+needs to be improved.
+
+```shell
+time cabal run 50 1000000
+Preprocessing executable '50' for projecteuler-0.1.0.0...
+997651
+
+real    2m54.542s
+user    2m54.157s
+sys     0m0.350s
+```
+
 # 96. Su Doku.
 
 #### [Problem][p96] | [Solution][s96]
