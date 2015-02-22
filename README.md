@@ -3,15 +3,15 @@ anything. Gives me an incentive to keep my code clean.
 
 ## Content:
 
-# [7.hs](https://projecteuler.net/problem=7)
+# 7
+
+#### [Problem][p7] | [Solution][s7]
 
 Haskell's show-off example: "Sieve of Eratosthenes"
 
 ```shell
 time cabal run 7 10001
 Preprocessing executable '7' for projecteuler-0.1.0.0...
-[1 of 1] Compiling Main             ( 7.hs, dist/build/7/7-tmp/Main.o )
-Linking dist/build/7/7 ...
 104743
 
 real    0m5.074s
@@ -19,14 +19,17 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
-# [79.hs](https://projecteuler.net/problem=79)
+# 79
+
+#### [Problem][p79] | [Solution][s79]
+
 Solution to 79'th problem without the assumption of non-repeats.
 Algorithm: with each successful attempt generate all shortest passwords for
 each shortest password generated so far.
 
 try:
 ```shell
-time run 79 ./data/keylog.txt
+time cabal run 79 ./data/keylog.txt
 Preprocessing executable '79' for projecteuler-0.1.0.0...
 73162890
 
@@ -35,7 +38,9 @@ user    0m0.910s
 sys     0m0.320s
 ```
 
-# [88.hs](https://projecteuler.net/problem=88)
+# 88
+
+#### [Problem][p88] | [Solution][s88]
 
 Brute forces decomposition via factorisation and backtracking.
 
@@ -49,7 +54,9 @@ user    0m8.363s
 sys     0m0.390s
 ```
 
-# [96.hs](https://projecteuler.net/problem=96)
+# 96
+
+#### [Problem][p96] | [Solution][s96]
 
 Backtracking depth-first algorithm. At each step pick a square with least
 number of guesses.
@@ -63,3 +70,13 @@ real    0m2.429s
 user    0m2.090s
 sys     0m0.323s
 ```
+
+[p7]: https://projecteuler.net/problem=7
+[s7]: https://github.com/afiodorov/projectEuler/blob/master/7.hs
+[p79]: https://projecteuler.net/problem=79
+[s79]: https://github.com/afiodorov/projectEuler/blob/master/79.hs
+[p88]: https://projecteuler.net/problem=88
+[s88]: https://github.com/afiodorov/projectEuler/blob/master/88.hs
+[p96]: https://projecteuler.net/problem=96
+[s96]: https://github.com/afiodorov/projectEuler/blob/master/96.hs
+
