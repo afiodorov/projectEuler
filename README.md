@@ -19,7 +19,7 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
-# 50. Su Doku.
+# 50. Consecutive prime sum.
 
 #### [Problem][p50] | [Solution][s50]
 
