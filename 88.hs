@@ -29,7 +29,13 @@ decompose' size prod sum'
         f d = (d:) <$> decompose' (size - 1) (prod `div` d) (sum' - d)
 
 factors :: Int -> [Int]
-factors n = filter ((0 ==) . mod n) (takeWhile (<= n) [2..])
+factors n = lower ++ upper'
+    where
+    lower = filter ((0 ==) . mod n) (takeWhile (<= maxFactor) [2..])
+    maxFactor = truncate (sqrt (fromIntegral n :: Double))
+    upper = map (div n) (reverse lower) ++ [n]
+    upper' = if maxFactor == head upper then tail upper else upper
+
 
 main :: IO ()
 main = print $ sum . nub $ map smallestInt [2..12000]

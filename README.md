@@ -24,13 +24,13 @@ Brute forces decomposition via factorisation and backtracking. Lower-bound
 comes from Geometric Mean <= Average.
 
 ```shell
- time cabal run 88
- Preprocessing executable '88' for projecteuler-0.1.0.0...
- 7587457
+time cabal run 88
+Preprocessing executable '88' for projecteuler-0.1.0.0...
+7587457
 
- real    0m11.354s
- user    0m10.903s
- sys     0m0.430s
+real    0m8.709s
+user    0m8.393s
+sys     0m0.310s
 ```
 
 # 96.hs
