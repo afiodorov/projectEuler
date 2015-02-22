@@ -3,13 +3,12 @@ import Control.Applicative ((<$>))
 import Data.Maybe (fromJust)
 import Data.List (nub)
 import Memoize (memoize)
+import Data.Functor ((<$))
 
 smallestInt :: Int -> Int
 smallestInt size = fromJust . msum $ map f [size ..]
     where
-    f n = case decompose size n of
-        Nothing -> Nothing
-        Just _  -> Just n
+    f n = n <$ decompose size n
 
 decompose :: Int -> Int -> Maybe [Int]
 decompose size n = decompose' size n n
