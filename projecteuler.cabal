@@ -19,7 +19,7 @@ executable 7
   main-is:             7.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base >=4.7 && <4.9
   -- hs-source-dirs:
   default-language:    Haskell2010
 
@@ -27,7 +27,7 @@ executable 50
   main-is:             50.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base >=4.7 && <4.9
   -- hs-source-dirs:
   default-language:    Haskell2010
 
@@ -35,7 +35,7 @@ executable 79
   main-is:             79.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base >=4.7 && <4.9
   -- hs-source-dirs:
   default-language:    Haskell2010
 
@@ -43,7 +43,7 @@ executable 88
   main-is:             88.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.8,
+  build-depends:       base >=4.7 && <4.9,
                        containers >= 0.5.5.1
   -- hs-source-dirs:
   default-language:    Haskell2010
@@ -52,9 +52,21 @@ executable 96
   main-is:             96.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.8,
+  build-depends:       base >=4.7 && <4.9,
                        matrix == 0.2.1,
                        vector >= 0.10.12.2,
                        split >= 0.1.1
+  -- hs-source-dirs:
+  default-language:    Haskell2010
+
+
+executable 49
+  main-is:             49.hs
+  -- other-modules:
+  -- other-extensions:
+  build-depends:       base >=4.7 && <4.9,
+                       primes >= 0.2,
+                       digits == 0.2
+
   -- hs-source-dirs:
   default-language:    Haskell2010

@@ -29,13 +29,21 @@ For each prime between 1000 and 10000 generate all permutations, and then
 keep permutations that are primes only. Then for all candidate set choose 3 and
 check whether smallest + largest = 2 * middle.
 
-```shell
-time go run 49.go
-296962999629
+# 49 Prime permutations (haskell)
 
-real    0m0.414s
-user    0m0.367s
-sys     0m0.107s
+#### [Problem][p49] | [Solution][s49s]
+
+Just to compare it to haskell solution, I am including a 2-liner.
+
+```shel
+time cabal run 49
+Preprocessing executable '49' for projecteuler-0.1.0.0...
+Running 49...
+[2969,6299,9629]
+
+real    0m0.974s
+user    0m0.750s
+sys     0m0.243s
 ```
 
 # 50. Consecutive prime sum.
@@ -110,6 +118,7 @@ sys     0m0.323s
 [s7]: https://github.com/afiodorov/projectEuler/blob/master/7.hs
 [p49]: https://projecteuler.net/problem=49
 [s49]: https://github.com/afiodorov/projectEuler/blob/master/49.go
+[s49s]: https://github.com/afiodorov/projectEuler/blob/master/49.hs
 [p50]: https://projecteuler.net/problem=50
 [s50]: https://github.com/afiodorov/projectEuler/blob/master/50.hs
 [p79]: https://projecteuler.net/problem=79
