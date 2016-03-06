@@ -48,11 +48,11 @@ Just to compare it to haskell solution, I am including a 2-liner.
 time cabal run 49
 Preprocessing executable '49' for projecteuler-0.1.0.0...
 Running 49...
-[2969,6299,9629]
+296962999629
 
-real    0m0.974s
-user    0m0.750s
-sys     0m0.243s
+real    0m1.703s
+user    0m1.433s
+sys     0m0.290s
 ```
 
 # 50. Consecutive prime sum.
