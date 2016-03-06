@@ -19,7 +19,7 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
-# 49. Prime permutations
+# 49. Prime permutations.
 
 #### [Problem][p49] | [Solution][s49]
 
@@ -38,7 +38,7 @@ user    0m0.367s
 sys     0m0.107s
 ```
 
-# 49 Prime permutations (haskell)
+# 49 Prime permutations (Haskell).
 
 #### [Problem][p49] | [Solution][s49s]
 
