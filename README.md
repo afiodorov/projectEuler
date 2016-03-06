@@ -19,6 +19,25 @@ user    0m4.543s
 sys     0m0.503s
 ```
 
+# 49. Prime permutations
+
+#### [Problem][p49] | [Solution][s49]
+
+This one is written in Go because I am learning go now.
+
+For each prime between 1000 and 10000 generate all permutations, and then
+keep permutations that are primes only. Then for all candidate set choose 3 and
+check whether smallest + largest = 2 * middle.
+
+```shell
+time go run 49.go
+296962999629
+
+real    0m0.414s
+user    0m0.367s
+sys     0m0.107s
+```
+
 # 50. Consecutive prime sum.
 
 #### [Problem][p50] | [Solution][s50]
@@ -89,6 +108,8 @@ sys     0m0.323s
 
 [p7]: https://projecteuler.net/problem=7
 [s7]: https://github.com/afiodorov/projectEuler/blob/master/7.hs
+[p49]: https://projecteuler.net/problem=49
+[s49]: https://github.com/afiodorov/projectEuler/blob/master/49.go
 [p50]: https://projecteuler.net/problem=50
 [s50]: https://github.com/afiodorov/projectEuler/blob/master/50.hs
 [p79]: https://projecteuler.net/problem=79
@@ -97,3 +118,4 @@ sys     0m0.323s
 [s88]: https://github.com/afiodorov/projectEuler/blob/master/88.hs
 [p96]: https://projecteuler.net/problem=96
 [s96]: https://github.com/afiodorov/projectEuler/blob/master/96.hs
+
