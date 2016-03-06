@@ -29,13 +29,22 @@ For each prime between 1000 and 10000 generate all permutations, and then
 keep permutations that are primes only. Then for all candidate set choose 3 and
 check whether smallest + largest = 2 * middle.
 
+```shell
+time go run 49.go
+296962999629
+
+real    0m0.414s
+user    0m0.367s
+sys     0m0.107s
+```
+
 # 49 Prime permutations (haskell)
 
 #### [Problem][p49] | [Solution][s49s]
 
 Just to compare it to haskell solution, I am including a 2-liner.
 
-```shel
+```shell
 time cabal run 49
 Preprocessing executable '49' for projecteuler-0.1.0.0...
 Running 49...
